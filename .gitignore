@@ -1,4 +1,6 @@
 data/
 .idea/
-
+.ipynb_checkpoints
 *.h5
+
+venv
