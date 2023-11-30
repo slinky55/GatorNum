@@ -1,27 +1,27 @@
-import tensorflow as tf
+import cv2
 
-mnist_raw = tf.keras.datasets.mnist
+image = cv2.imread('Test.jpg')
 
-(x_train, y_train), (x_test, y_test) = mnist_raw.load_data()
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+ret, thresh = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY_INV)
+kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (150, 2))
+mask = cv2.morphologyEx(thresh, cv2.MORPH_DILATE, kernel)
 
-label_names = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+mask = cv2.resize(mask, None, fx=0.25, fy=0.25)
 
-x_train = x_train / 255.0
-x_test = x_test / 255.0
+cv2.imshow("Mask Image", mask)
+cv2.waitKey()
 
-model = tf.keras.Sequential([
-    tf.keras.layers.Flatten(input_shape=(28, 28)),
-    tf.keras.layers.Dense(128, activation='relu'),
-    tf.keras.layers.Dense(10),
-    tf.keras.layers.Softmax(),
-])
+bboxes = []
+bboxes_img = image.copy()
+bboxes_img = cv2.resize(bboxes_img, None, fx=0.25, fy=0.25)
+contours = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+contours = contours[0] if len(contours) == 2 else contours[1]
+for cntr in contours:
+    x, y, w, h = cv2.boundingRect(cntr)
+    cv2.rectangle(bboxes_img, (x, y), (x + w, y + h), (0, 0, 255), 1)
+    bboxes.append((x, y, w, h))
 
-model.compile(optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-              metrics=['accuracy'])
 
-model.fit(x_train, y_train, epochs=9)
-
-_, test_acc = model.evaluate(x_test, y_test, verbose=2)
-
-print('\nTest accuracy:', test_acc)
+cv2.imshow("Boxes", bboxes_img)
+cv2.waitKey()
