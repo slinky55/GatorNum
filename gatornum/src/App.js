@@ -1,5 +1,6 @@
 import './App.css';
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const OCRApp = () => {
   const [transcribedText, setTranscribedText] = useState('');
@@ -17,15 +18,24 @@ const OCRApp = () => {
 
   // Function to handle form submission
   const handleSubmit = () => {
-    // Send the selectedImage to the API
-    // You can implement the API call here once it is designed
-    // Example: axios.post('/api/ocr', { image: selectedImage })
-    //   .then(response => {
-    //     setTranscribedText(response.data.transcribedText);
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //   });
+    // Check if an image is selected
+    if (selectedImage) {
+      // Create a FormData object to send the image file
+      const formData = new FormData();
+      formData.append('image', selectedImage);
+
+      // Make a POST request to the Flask backend
+      axios.post('http://localhost:5000/predict', formData) // Replace with your backend URL
+        .then(response => {
+          // Assuming the response contains the transcribed text
+          setTranscribedText(response.data.prediction); // Set the transcribed text in the state
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    } else {
+      console.error('No image selected');
+    }
   };
 
   return (
