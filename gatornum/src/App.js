@@ -15,6 +15,19 @@ const OCRApp = () => {
     // setTranscribedText(transcribedTextFromOCR);
   };
 
+  // Function to handle form submission
+  const handleSubmit = () => {
+    // Send the selectedImage to the API
+    // You can implement the API call here once it is designed
+    // Example: axios.post('/api/ocr', { image: selectedImage })
+    //   .then(response => {
+    //     setTranscribedText(response.data.transcribedText);
+    //   })
+    //   .catch(error => {
+    //     console.error(error);
+    //   });
+  };
+
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
@@ -37,29 +50,28 @@ const OCRApp = () => {
 
         {/* Image Upload */}
         <div className="flex flex-col items-center justify-center">
-        <div className="bg-white p-4 rounded-md">
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className="border border-gray-300 p-2 rounded-md"
-          />
+          <div className="bg-white p-4 rounded-md">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="border border-gray-300 p-2 rounded-md"
+            />
+          </div>
         </div>
-        </div>
-
         {/* Image Placeholder */}
         {selectedImage && (
-          <div className="mb-4">
+            <div className="mb-4 flex justify-center" style={{ paddingTop: '40px' }}>
             <img
               src={selectedImage}
               alt="Selected"
-              className="max-w-full h-auto rounded-md shadow-md"
+              className="max-w-3/4 h-auto rounded-md shadow-md"
             />
           </div>
         )}
 
         {/* Transcribed Text Box */}
-        <div>
+        <div style={{ maxWidth: '75%', margin: '0 auto' }}>
           <h2 className="text-xl font-bold mb-2 text-center text-white p-2">Transcribed Text</h2>
           <textarea
             value={transcribedText}
@@ -69,6 +81,15 @@ const OCRApp = () => {
             readOnly
           ></textarea>
         </div>
+
+        {/* Submit Button */}
+        <button
+          onClick={handleSubmit}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-auto mt-4"
+          style={{ display: 'block' }}
+        >
+          Submit
+        </button>
       </main>
 
       {/* Footer */}
@@ -80,3 +101,4 @@ const OCRApp = () => {
 };
 
 export default OCRApp;
+        
