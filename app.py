@@ -5,10 +5,9 @@ import numpy as np
 import imutils
 import cv2
 
-model = load_model("model.h5")
+model = load_model("model")
 labelNames = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 labelNames = [c for c in labelNames]
-
 
 def scan_image(path):
     image = cv2.imread(path)
@@ -61,4 +60,7 @@ def scan_image(path):
     cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
     cv2.putText(image, label, (x - 10, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)
 
-    cv2.imwrite(path, image)
+    cv2.imwrite(path + "_scanned", image)
+
+
+scan_image("hello_world.png")
