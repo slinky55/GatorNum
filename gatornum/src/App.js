@@ -2,6 +2,8 @@ import './App.css';
 import React, { useState } from 'react';
 import axios from 'axios';
 
+
+
 const OCRApp = () => {
   const [transcribedText, setTranscribedText] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
@@ -10,10 +12,10 @@ const OCRApp = () => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     // You can perform additional checks here, e.g., file type validation
+    // console.log(file);
     setSelectedImage(URL.createObjectURL(file));
-    // Here, you can integrate your OCR functionality to transcribe text from the image
-    // Once you have the transcribed text, update the state using setTranscribedText
-    // setTranscribedText(transcribedTextFromOCR);
+    // console.log(selectedImage);
+    
   };
 
   // Function to handle form submission
@@ -21,13 +23,16 @@ const OCRApp = () => {
     // Check if an image is selected
     if (selectedImage) {
       // Create a FormData object to send the image file
-      const formData = new FormData();
-      formData.append('image', selectedImage);
+      const formData = {
+        'image': selectedImage
+      };
+      console.log(formData);
 
       // Make a POST request to the Flask backend
       axios.post('http://localhost:5000/predict', formData) // Replace with your backend URL
         .then(response => {
           // Assuming the response contains the transcribed text
+          console.log(response.data);
           setTranscribedText(response.data.prediction); // Set the transcribed text in the state
         })
         .catch(error => {
