@@ -241,8 +241,8 @@ model.compile(loss="categorical_crossentropy", optimizer=opt,
 model_checkpoint_callback = callbacks.ModelCheckpoint(
     filepath='model',
     save_best_only=True,
-    monitor='val_loss',
-    mode='min',
+    monitor='val_accuracy',
+    mode='max',
     verbose=1)
 
 # Callback for early stopping
