@@ -1,7 +1,16 @@
 # GatorNum
 
-Initial ReadMe
+This project was used as the final project for UF's Intro to Machine Learning Special Topics Course. Done by: Gabriel Castejon and Larry Mason, Fall 2023.
 
+## Overview
+
+Using ReactJS as a front-end and Python as both the back-end and ML language of choice, we developed a simple version of an optical character reader using machine learning.
+
+The front-end takes in images in PNG or PDF format and sends it to the python back-end for pre-processing, text localization, and then a prediction using a pre-trained model of the MNIST dataset.
+
+
+
+### References and Notes for the Project
 
 Source from book:
 https://github.com/ageron/handson-ml2 
