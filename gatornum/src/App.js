@@ -7,15 +7,35 @@ import axios from 'axios';
 const OCRApp = () => {
   const [transcribedText, setTranscribedText] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
+  // const [imageData, setImageData] = useState(null);
+  const [base64, setBase64] = useState(null);
 
   // Function to handle image selection
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
+
+    
     // You can perform additional checks here, e.g., file type validation
     // console.log(file);
     setSelectedImage(URL.createObjectURL(file));
+    setBase64(await convertToBase64(file));
     // console.log(selectedImage);
     
+    // setImageBlob(await image.blob()); // Convert the fetched data into a Blob object
+    // console.log(imageBlob);
+  };
+
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
   };
 
   // Function to handle form submission
@@ -23,8 +43,9 @@ const OCRApp = () => {
     // Check if an image is selected
     if (selectedImage) {
       // Create a FormData object to send the image file
+      
       const formData = {
-        'image': selectedImage
+        'image': base64
       };
       console.log(formData);
 
