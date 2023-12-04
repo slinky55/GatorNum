@@ -5,7 +5,7 @@ import axios from 'axios';
 
 
 const OCRApp = () => {
-  const [transcribedText, setTranscribedText] = useState('');
+  const [labeledOutput, setLabeledOutput] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   // const [imageData, setImageData] = useState(null);
   const [base64, setBase64] = useState(null);
@@ -14,13 +14,13 @@ const OCRApp = () => {
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
 
-    
+
     // You can perform additional checks here, e.g., file type validation
     // console.log(file);
     setSelectedImage(URL.createObjectURL(file));
     setBase64(await convertToBase64(file));
     // console.log(selectedImage);
-    
+
     // setImageBlob(await image.blob()); // Convert the fetched data into a Blob object
     // console.log(imageBlob);
   };
@@ -43,18 +43,18 @@ const OCRApp = () => {
     // Check if an image is selected
     if (selectedImage) {
       // Create a FormData object to send the image file
-      
+
       const formData = {
         'image': base64
       };
       console.log(formData);
 
       // Make a POST request to the Flask backend
-      axios.post('http://localhost:5000/predict', formData) // Replace with your backend URL
+      axios.post('/scan', formData) // Replace with your backend URL
         .then(response => {
           // Assuming the response contains the transcribed text
           console.log(response.data);
-          setTranscribedText(response.data.prediction); // Set the transcribed text in the state
+          setLabeledOutput(response.data.labeled); // Set the transcribed text in the state
         })
         .catch(error => {
           console.error('Error:', error);
@@ -106,17 +106,17 @@ const OCRApp = () => {
           </div>
         )}
 
-        {/* Transcribed Text Box */}
-        <div style={{ maxWidth: '75%', margin: '0 auto' }}>
-          <h2 className="text-xl font-bold mb-2 text-center text-white p-2">Transcribed Text</h2>
-          <textarea
-            value={transcribedText}
-            onChange={(e) => setTranscribedText(e.target.value)}
-            className="border border-gray-300 p-2 rounded-md w-full h-32 resize-none"
-            placeholder="Transcribed text will appear here..."
-            readOnly
-          ></textarea>
-        </div>
+        {/* Output Image */}
+        {labeledOutput && (
+          <div style={{ maxWidth: '75%', margin: '0 auto' }}>
+            <h2 className="text-xl font-bold mb-2 text-center text-white p-2">Output Image</h2>
+            <img
+              src={`data:image/png;base64,${labeledOutput}`}
+              alt="Output"
+              className="max-w-full h-auto rounded-md shadow-md"
+            />
+          </div>
+        )}
 
         {/* Submit Button */}
         <button
@@ -137,4 +137,3 @@ const OCRApp = () => {
 };
 
 export default OCRApp;
-        
