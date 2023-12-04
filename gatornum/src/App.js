@@ -108,7 +108,7 @@ const OCRApp = () => {
 
         {/* Output Image */}
         {labeledOutput && (
-          <div style={{ maxWidth: '75%', margin: '0 auto' }}>
+          <div style={{ maxWidth: '75%', margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             <h2 className="text-xl font-bold mb-2 text-center text-white p-2">Output Image</h2>
             <img
               src={`data:image/png;base64,${labeledOutput}`}
