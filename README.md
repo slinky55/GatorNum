@@ -8,7 +8,16 @@ Using ReactJS as a front-end and Python as both the back-end and ML language of 
 
 The front-end takes in images in PNG or PDF format and sends it to the python back-end for pre-processing, text localization, and then a prediction using a pre-trained model of the MNIST dataset.
 
+## Project Setup
 
+- Step 1: Clone the repository or download it
+- Step 2: Either create a virtual environment or locally install the required libraries for python:
+pip install -r requirements.txt
+-Step 3: Build the project using the given 'build.sh' script.
+
+### Video Showcase:
+
+https://www.youtube.com/watch?v=FIbR2ONn1w0
 
 ### References and Notes for the Project
 
